@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Platform, StyleSheet, Text, View, Alert} from 'react-native'
+import { StyleSheet, Text, View, Alert } from 'react-native'
 import params from './src/params'
 import Field from './src/componentes/Field'
 import MineField from './src/componentes/MineField'
@@ -43,7 +43,7 @@ export default class App extends Component {
 			Alert.alert('Parabéns', 'Você Venceu!')
 		}
 
-		this.setState( board, lost, won )
+		this.setState({ board, lost, won })
 	}
 
 	render() {
