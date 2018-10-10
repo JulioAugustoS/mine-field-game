@@ -48,7 +48,7 @@ export default class App extends Component {
 
 		if(lost){
 			showMines(board)
-			Alert.alert('Perdeeeeeu', 'Seu Animal')
+			Alert.alert('Perdeeeeeu', 'Tente novamente')
 		}
 
 		if(won){
