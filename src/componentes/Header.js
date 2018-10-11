@@ -6,15 +6,15 @@ export default props => {
     return(
         <View style={styles.container}>
             <View style={styles.flagContainer}>
-                <TouchableOpacity onPress={props.onFlagPress}
+                <View onPress={props.onFlagPress}
                    style={styles.flagButton}>
                    <Flag bigger />
-                </TouchableOpacity>
+                </View>
                 <Text style={styles.flagsLeft}> = {props.flagsLeft}</Text>
             </View>
             <TouchableOpacity style={styles.button}
-                onPress={props.onNewGame}>
-                <Text style={styles.buttonLabel}>Novo Jogo</Text>    
+                onPress={props.dificultPress}>
+                <Text style={styles.buttonLabel}>Dificuldade</Text>    
             </TouchableOpacity>
         </View>
     )
