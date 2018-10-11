@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
 import { StyleSheet, Text, View, Alert } from 'react-native'
-import params from './src/params'
-import Field from './src/componentes/Field'
-import MineField from './src/componentes/MineField'
-import Header from './src/componentes/Header'
-import LevelSelection from './src/screens/LevelSelection'
+import { Actions } from 'react-native-router-flux'
+import params from '../params'
+import Field from '../componentes/Field'
+import MineField from '../componentes/MineField'
+import Header from '../componentes/Header'
+import LevelSelection from '../screens/LevelSelection'
 import { 
 	createMinedBoard, 
 	cloneBoard, 
@@ -14,14 +15,54 @@ import {
 	showMines, 
 	invertFlag, 
 	flagsUsed 
-} from './src/functions'
+} from '../functions'
 
-export default class App extends Component {
+class Game extends Component {
 
 	constructor(props){
 		super(props)
 		this.state = this.createState()
-	}
+    }
+    
+    win = () => {
+        Alert.alert(
+            'Parabéns!', 
+            'Você venceu',
+            [
+                {
+                    text: 'Iniciar Novo Jogo',
+                    onPress: () => this.setState(this.createState()),
+                    style: 'default'
+                },
+                {
+                    text: 'Voltar ao Menu',
+                    onPress: () => Actions.menu({}),
+                    style: 'cancel'
+                }
+			],
+			{ cancelable: false }
+        )
+    }
+
+    lost = () => {
+        Alert.alert(
+            'Game Over!', 
+            'Tente novamente',
+            [
+                {
+                    text: 'Iniciar Novo Jogo',
+                    onPress: () => this.setState(this.createState()),
+                    style: 'default'
+                },
+                {
+                    text: 'Voltar ao Menu',
+                    onPress: () => Actions.menu({}),
+                    style: 'cancel'
+				}
+			],
+			{ cancelable: false }
+        )
+    }
 
 	minesAmount = () => {
 		const cols = params.getColumnsAmount()
@@ -48,11 +89,11 @@ export default class App extends Component {
 
 		if(lost){
 			showMines(board)
-			Alert.alert('Perdeeeeeu', 'Tente novamente')
+			this.lost()
 		}
 
 		if(won){
-			Alert.alert('Parabéns', 'Você Venceu!')
+			this.win()
 		}
 
 		this.setState({ board, lost, won })
@@ -64,7 +105,7 @@ export default class App extends Component {
 		const won = wonGame(board)
 
 		if(won){
-			Alert.alert('Parabéns', 'Você Venceu!')
+			this.win()
 		}
 
 		this,this.setState({ board, won })
@@ -80,14 +121,17 @@ export default class App extends Component {
 			<View style={styles.container}>
 				<LevelSelection isVisible={this.state.showLevelSelection}
 					onLevelSelected={this.onLevelSelected}
-					onCancel={() => this.setState({ showLevelSelection: false })} />
+					onCancel={() => this.setState({ showLevelSelection: false })} 
+				/>
 				<Header flagsLeft={this.minesAmount() - flagsUsed(this.state.board)} 
-					onNewGame={() => this.setState(this.createState())}
-					onFlagPress={() => this.setState({ showLevelSelection: true })} />
+					dificultPress={() => this.setState({ showLevelSelection: true })}
+					onFlagPress={() => this.setState({ showLevelSelection: true })} 
+				/>
 				<View style={styles.board}>
 					<MineField board={this.state.board} 
 						onOpenField={this.onOpenField}
-						onSelectField={this.onSelectField} />
+						onSelectField={this.onSelectField} 
+					/>
 				</View>
 			</View>
 		)
@@ -104,3 +148,5 @@ const styles = StyleSheet.create({
 		backgroundColor: '#AAA',
 	}
 });
+
+export default Game
